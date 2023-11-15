@@ -22,7 +22,7 @@ USERDATA
 resource "aws_launch_configuration" "eks" {
   associate_public_ip_address = true
   iam_instance_profile        = "${aws_iam_instance_profile.eks_node.name}"
-  image_id                    = "ami-002595b7394a41704"
+  image_id                    = "ami-0f841a34819f69436"
   #########>>>>>>>>>>>>>  Change the ami according to k8s version changes 
   instance_type               = "${var.node_size}"
   name_prefix                 = "eks-${var.cluster_name}"

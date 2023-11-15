@@ -5,7 +5,7 @@ variable "aws_profile" {
 }
 variable "aws_region" {
   type        = string
-  default     = "eu-west-1"
+  default     = "us-east-2"
   
 }
 

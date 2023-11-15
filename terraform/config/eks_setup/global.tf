@@ -5,7 +5,7 @@ locals {
         prod = "prod"
     }
 
-    aws_region = "eu-west-1"
+    aws_region = "us-east-2"
 
     access_key  = {
         dev = "devkey"
