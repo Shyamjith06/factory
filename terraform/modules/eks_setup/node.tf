@@ -12,10 +12,20 @@
 # }
 
 locals {
-  eks_node_userdata = <<USERDATA
-#!/bin/bash
-set -o xtrace
-/etc/eks/bootstrap.sh --apiserver-endpoint '${aws_eks_cluster.eks.endpoint}' --b64-cluster-ca '${aws_eks_cluster.eks.certificate_authority.0.data}' '${var.cluster_name}'
+  eks_node_userdata = <<-USERDATA
+apiVersion: node.eks.aws/v1alpha1
+kind: NodeConfig
+spec:
+  cluster:
+    name: ${var.cluster_name}
+    apiServerEndpoint: ${aws_eks_cluster.eks.endpoint}
+    certificateAuthority: ${aws_eks_cluster.eks.certificate_authority.0.data}
+    cidr: 172.20.0.0/16
+
+  kubelet:
+    config:
+      clusterDNS:
+        - 172.20.0.10
 USERDATA
 }
 
@@ -42,7 +52,7 @@ resource "aws_launch_template" "eks" {
     name = aws_iam_instance_profile.eks_node.name
   }
 
-  image_id                 = "ami-011ff188c787ba1eb"  # Change the AMI according to Kubernetes version changes 
+  image_id                 = "ami-010dc083ce771f833"  # Change the AMI according to Kubernetes version changes 
   # find the ami id for your cluster version from here - https://github.com/awslabs/amazon-eks-ami/blob/master/CHANGELOG.md 
   # select the image for - amazon-eks-node
   instance_type            = var.node_size
